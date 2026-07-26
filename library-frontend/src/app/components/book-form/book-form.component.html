@@ -1,0 +1,76 @@
+<div class="container mt-4" style="max-width: 500px;">
+  <h1 class="h3 mb-3">{{ isEditMode ? 'Edit Book' : 'Add Book' }}</h1>
+
+  <div class="alert alert-danger" role="alert" *ngIf="errorMessage">
+    {{ errorMessage }}
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="mb-3">
+      <label class="form-label">Title</label>
+      <input
+        type="text"
+        class="form-control"
+        [class.is-invalid]="form.get('title')?.invalid && form.get('title')?.touched"
+        formControlName="title"
+      />
+      <div class="invalid-feedback" *ngIf="form.get('title')?.invalid && form.get('title')?.touched">
+        Title is required
+      </div>
+      <div class="text-danger small mt-1" *ngIf="fieldErrors['title']">{{ fieldErrors['title'] }}</div>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">ISBN</label>
+      <input
+        type="text"
+        class="form-control"
+        [class.is-invalid]="form.get('isbn')?.invalid && form.get('isbn')?.touched"
+        formControlName="isbn"
+      />
+      <div class="invalid-feedback" *ngIf="form.get('isbn')?.invalid && form.get('isbn')?.touched">
+        ISBN is required
+      </div>
+      <div class="text-danger small mt-1" *ngIf="fieldErrors['isbn']">{{ fieldErrors['isbn'] }}</div>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Author</label>
+      <select
+        class="form-select"
+        [class.is-invalid]="form.get('authorId')?.invalid && form.get('authorId')?.touched"
+        formControlName="authorId"
+      >
+        <option [ngValue]="null">-- select an author --</option>
+        <option *ngFor="let author of authors" [ngValue]="author.id">
+          {{ author.name }}
+        </option>
+      </select>
+      <div class="invalid-feedback" *ngIf="form.get('authorId')?.invalid && form.get('authorId')?.touched">
+        Author is required
+      </div>
+    </div>
+
+    <div class="input-group mb-4">
+      <input
+        type="text"
+        class="form-control"
+        [(ngModel)]="newAuthorName"
+        [ngModelOptions]="{ standalone: true }"
+        placeholder="New author name"
+      />
+      <button type="button" class="btn btn-outline-secondary" (click)="addAuthor()">
+        + Add author
+      </button>
+    </div>
+
+    <div class="d-flex gap-2">
+      <button type="submit" class="btn btn-primary">
+        {{ isEditMode ? 'Update' : 'Create' }}
+      </button>
+      <button type="button" class="btn btn-outline-secondary" (click)="cancel()">
+        Cancel
+      </button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,60 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3 mb-0">📚 Library - Books</h1>
+    <a routerLink="/books/new" class="btn btn-primary">+ Add a new book</a>
+  </div>
+
+  <div class="alert alert-danger" role="alert" *ngIf="errorMessage">
+    {{ errorMessage }}
+  </div>
+
+  <div class="table-responsive" *ngIf="books.length > 0">
+    <table class="table table-striped table-hover align-middle">
+      <thead class="table-dark">
+        <tr>
+          <th>Title</th>
+          <th>ISBN</th>
+          <th>Author</th>
+          <th>Status</th>
+          <th class="text-end">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let book of books">
+          <td>{{ book.title }}</td>
+          <td>{{ book.isbn }}</td>
+          <td>{{ book.authorName }}</td>
+          <td>
+            <span class="badge" [ngClass]="book.available ? 'bg-success' : 'bg-secondary'">
+              {{ book.available ? 'Available' : 'Borrowed' }}
+            </span>
+          </td>
+          <td class="text-end">
+            <a [routerLink]="['/books', book.id, 'edit']" class="btn btn-sm btn-outline-secondary">
+              Edit
+            </a>
+            <button class="btn btn-sm btn-outline-danger" (click)="deleteBook(book.id)">
+              Delete
+            </button>
+            <button
+              class="btn btn-sm btn-outline-success"
+              *ngIf="book.available"
+              (click)="borrowBook(book.id)"
+            >
+              Borrow
+            </button>
+            <button
+              class="btn btn-sm btn-outline-warning"
+              *ngIf="!book.available"
+              (click)="returnBook(book.id)"
+            >
+              Return
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="text-muted" *ngIf="books.length === 0 && !errorMessage">No books yet.</p>
+</div>

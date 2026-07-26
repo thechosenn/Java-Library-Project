@@ -1,0 +1,24 @@
+<h1>Library - Books</h1>
+
+<p *ngIf="errorMessage" style="color: red;">{{ errorMessage }}</p>
+
+<table border="1" cellpadding="6" *ngIf="books.length > 0">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>ISBN</th>
+      <th>Author</th>
+      <th>Available</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let book of books">
+      <td>{{ book.title }}</td>
+      <td>{{ book.isbn }}</td>
+      <td>{{ book.authorName }}</td>
+      <td>{{ book.available ? 'Yes' : 'No' }}</td>
+    </tr>
+  </tbody>
+</table>
+
+<p *ngIf="books.length === 0 && !errorMessage">No books yet.</p>
