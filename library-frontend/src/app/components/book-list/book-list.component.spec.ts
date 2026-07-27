@@ -3,6 +3,7 @@ import { of, throwError } from 'rxjs';
 import { provideRouter } from '@angular/router';
 import { BookListComponent } from './book-list.component';
 import { BookService } from '../../services/book.service';
+import { AuthService } from '../../services/auth.service';
 import { Book } from '../../models/book.model';
 
 describe('BookListComponent', () => {
@@ -12,6 +13,7 @@ describe('BookListComponent', () => {
   // "spies" - fake functions we control per test, so we NEVER hit a real
   // backend or network in a unit test. Same idea as Mockito's @Mock in Java.
   let bookServiceSpy: jasmine.SpyObj<BookService>;
+  let authServiceSpy: jasmine.SpyObj<AuthService>;
 
   const mockBooks: Book[] = [
     { id: 1, title: 'Clean Code', isbn: '123', available: true, authorId: 1, authorName: 'Robert Martin' },
@@ -25,11 +27,14 @@ describe('BookListComponent', () => {
       'borrowBook',
       'returnBook',
     ]);
+    authServiceSpy = jasmine.createSpyObj('AuthService', ['getUsername', 'logout']);
+    authServiceSpy.getUsername.and.returnValue('alice');
 
     await TestBed.configureTestingModule({
       imports: [BookListComponent], // standalone component - imported directly, no NgModule
       providers: [
         { provide: BookService, useValue: bookServiceSpy },
+        { provide: AuthService, useValue: authServiceSpy },
         provideRouter([]), // RouterLink in the template needs a Router to be injectable
       ],
     }).compileComponents();

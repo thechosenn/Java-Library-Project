@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { Book } from '../../models/book.model';
 import { BookService } from '../../services/book.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-book-list',
@@ -14,7 +15,20 @@ export class BookListComponent implements OnInit {
   books: Book[] = [];
   errorMessage = '';
 
-  constructor(private bookService: BookService) {}
+  constructor(
+    private bookService: BookService,
+    private authService: AuthService,
+    private router: Router
+  ) {}
+
+  get username(): string | null {
+    return this.authService.getUsername();
+  }
+
+  logout(): void {
+    this.authService.logout();
+    this.router.navigate(['/login']);
+  }
 
   ngOnInit(): void {
     this.loadBooks();

@@ -1,12 +1,16 @@
 import { ApplicationConfig } from '@angular/core';
 import { provideRouter } from '@angular/router';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { authInterceptor } from './interceptors/auth.interceptor';
 
 import { routes } from './app.routes';
 
-// This is where app-wide services get "plugged in". provideHttpClient()
-// is what makes HttpClient injectable in BookService/AuthorService -
-// without this line, injecting HttpClient would throw a runtime error.
+// withInterceptors registers our functional interceptor into HttpClient's
+// pipeline - every request made through HttpClient anywhere in the app now
+// passes through authInterceptor first, which attaches the JWT if present.
 export const appConfig: ApplicationConfig = {
-  providers: [provideRouter(routes), provideHttpClient()]
+  providers: [
+    provideRouter(routes),
+    provideHttpClient(withInterceptors([authInterceptor])),
+  ],
 };

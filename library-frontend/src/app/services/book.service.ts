@@ -11,7 +11,7 @@ import { Book, BookRequest } from '../models/book.model';
   providedIn: 'root',
 })
 export class BookService {
-  private readonly baseUrl = 'http://localhost:8082/api/books';
+  private readonly baseUrl = 'http://localhost:8080/api/books';
 
   constructor(private http: HttpClient) {}
 
