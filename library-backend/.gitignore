@@ -1,0 +1,20 @@
+# --- Java / Back-End Ignores ---
+*.class
+target/
+out/
+.gradle/
+build/
+*.jar
+ 
+# --- Front-End Ignores ---
+node_modules/
+dist/
+.next/
+.npm/
+*.log
+ 
+# --- IDE & OS Ignores ---
+.idea/
+.vscode/
+*.iml
+.DS_Store
